@@ -1,0 +1,6 @@
+[package]
+name = "rotationpoint"
+version = "0.1.0"
+authors = ["alan <falloonalan@gmail.com>"]
+
+[dependencies]
