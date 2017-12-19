@@ -21,6 +21,23 @@ impl List {
         Cons(elem, Box::new(self))
     }
 
+    fn reversell(&self, last: List) -> List {
+        // `self` has to be matched, because the behavior of this method
+        // depends on the variant of `self`
+        // `self` has type `&List`, and `*self` has type `List`, matching on a
+        // concrete type `T` is preferred over a match on a reference `&T`
+        match *self {
+            // Can't take ownership of the tail, because `self` is borrowed;
+            // instead take a reference to the tail
+            Cons(elem, ref tail) => {
+                let new_tail = Cons(elem, Box::new(last));
+                tail.reversell(new_tail)
+            },
+            // Nil: we have reached the end of the old list, return the last link as the new head
+            Nil => last
+        }
+    }
+
     // Return the length of the list
     fn len(&self) -> u32 {
         // `self` has to be matched, because the behavior of this method
@@ -59,6 +76,8 @@ fn main() {
     list = list.prepend(1);
     list = list.prepend(2);
     list = list.prepend(3);
+
+    list = list.reversell(List::new());
 
     // Show the final state of the list
     println!("linked list has length: {}", list.len());
